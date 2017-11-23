@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <main role="main" class="container">
+        <h3>Все статьи в категории: {{ object.title }}</h3>
+        {% if object %}
+            {% if object.get_news %}
+            <ul>
+                {% for page in object.get_news %}
+                   <li><a href="{{ page.get_absolute_url }}">{{ page.title }}</a></li>
+                {% endfor %}
+            </ul>
+            {% else %}
+                <strong>Пока нет записей в этой категории!</strong>
+            {% endif %}
+        {% else %}
+            Категория "{{ object.title }}" не найдена!
+        {% endif %}
+     </main>
+{% endblock %}

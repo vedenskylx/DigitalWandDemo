@@ -13,20 +13,21 @@ class Category(models.Model):
     def get_absolute_url(self):
         return "/category/%i/" % self.id
 
+    def get_news(self):
+        return Article.objects.filter(category=self)
+
     class Meta:
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
 
 class Article(models.Model):
-    author = models.OneToOneField(User,
+    author = models.ForeignKey(User,
                                   verbose_name='Автор новости')
-    category = models.OneToOneField(Category,
+    category = models.ForeignKey(Category,
                                     verbose_name='Категория новости')
     title = models.TextField(max_length=255,
                              verbose_name='Заголовок')
-    img = models.ImageField(upload_to='news',
-                            height_field=100,
-                            width_field=100,
+    img = models.ImageField(upload_to='media/uploads',
                             blank=True,
                             null=True,
                             verbose_name='Изображение')

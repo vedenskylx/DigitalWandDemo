@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <ul style="list-style: none;">
+                {% for post in object_list %}
+                    <li>
+                        <a class="btn btn-secondary" href="{{ post.get_absolute_url }}" role="button">{{ post.title }}</a>
+                    </li>
+                {% empty %}
+            <h2>Нет категорий</h2>
+            {% endfor %}
+            </ul>
+        </div>
+        <hr>
+    </div>
+{% endblock %}
