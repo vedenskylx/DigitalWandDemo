@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'news.middleware.LoginRequiredMiddleware',
 ]
 
 ROOT_URLCONF = 'DWDemo.urls'
@@ -118,6 +119,13 @@ USE_TZ = True
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+LOGIN_REDIRECT_URL = '/category/'
+LOGIN_URL = '/'
+
+LOGIN_EXEMPT_URLS = (
+ r'^/$',
+ r'^legal/', # allow the entire /legal/* subsection
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
