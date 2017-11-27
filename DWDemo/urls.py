@@ -20,21 +20,9 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from news.views import CategoryListView, CategoryDetailView
 from django.contrib.auth.decorators import login_required
+from news import views
 
 admin.autodiscover()
-
-def decorate_url(decorator, urlconf):
-    '''Recreates the url object with the callback decorated'''
-    # urlconf autoresolves names, so callback will always be a function
-    return url(urlconf._regex, decorator(urlconf.callback), urlconf.default_args, urlconf.name)
-
-def decorate_include(decorator, urlpatterns):
-    urls = [
-        decorate_url(decorator, urlconf) if not isinstance(urlconf, RegexURLResolver) else decorate_include(decorator, urlconf)
-        for urlconf in urlpatterns[0]
-    ]
-    return (urls,) + urlpatterns[1:]
-
 
 urlpatterns = [
     url(r'^$', auth_views.login, {"template_name": "registration/login.html", 'redirect_authenticated_user': True}, name = 'login'),
@@ -43,5 +31,6 @@ urlpatterns = [
     url(r'^news/', include('news.urls')),
     url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
     url(r'^admin/', admin.site.urls),
+    url(r'^signup/$', views.signup, name='signup'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

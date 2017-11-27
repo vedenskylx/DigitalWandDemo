@@ -6,6 +6,15 @@
                 {% for post in object_list %}
                     <li>
                         <a class="btn btn-secondary" href="{{ post.get_absolute_url }}" role="button">{{ post.title }}</a>
+                        {% if post.get_news %}
+                        <ul>
+                            {% for page in post.get_news %}
+                               <li><a href="{{ page.get_absolute_url }}">{{ page.title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                            <strong>Пока нет записей в этой категории!</strong>
+                        {% endif %}
                     </li>
                 {% empty %}
             <h2>Нет категорий</h2>

@@ -3,6 +3,25 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 from tinymce.models import HTMLField
+from django import forms
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+
+class UserRegistrationForm(forms.ModelForm):
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Repeat password', widget=forms.PasswordInput)
+
+    username = 'demo'
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email')
+
+    def clean_password2(self):
+        cd = self.cleaned_data
+        if cd['password'] != cd['password2']:
+            raise forms.ValidationError('Passwords don\'t match.')
+        return cd['password2']
 
 class Category(models.Model):
     title = models.TextField(max_length=255)
@@ -37,6 +56,9 @@ class Article(models.Model):
 
     def __unicode__(self):
         return self.title
+
+    def get_user_name(self):
+        return User.objects.select_related().filter(id=self.author.id)[0]
 
     def get_absolute_url(self):
         return "/news/%i/" % self.id

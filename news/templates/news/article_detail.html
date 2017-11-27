@@ -10,6 +10,7 @@
           {% if object.img %}
               <img src="{{ object.img.url }}" alt="{{ object.title }}">
           {% endif %}
+          <p>Автор: {{ object.get_user_name.first_name }} {{ object.get_user_name.last_name }}</p>
       </div>
     </main>
 {% endblock %}
